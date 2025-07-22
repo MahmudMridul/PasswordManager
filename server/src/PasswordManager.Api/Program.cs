@@ -16,6 +16,18 @@ namespace PasswordManager.Api
             // Add services to the container.
             builder.Services.AddControllers();
 
+            // Add CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
+
             // Add Entity Framework with PostgreSQL
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -37,6 +49,14 @@ namespace PasswordManager.Api
                 });
 
             var app = builder.Build();
+            // Use CORS
+            app.UseCors("AllowReactApp");
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
 
             // Configure the HTTP request pipeline.
             app.UseHttpsRedirection();
