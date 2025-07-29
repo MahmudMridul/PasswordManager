@@ -10,12 +10,13 @@ namespace PasswordManager.Api.Data
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<PasswordEntry> PasswordEntries { get; set; }
+        public DbSet<Password> PasswordEntries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(entity =>
             {
+                entity.ToTable("Users", "pm");
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.GoogleId).IsUnique();
                 entity.HasIndex(e => e.Email).IsUnique();
@@ -30,11 +31,12 @@ namespace PasswordManager.Api.Data
                     .HasColumnType("timestamp with time zone");
             });
 
-            modelBuilder.Entity<PasswordEntry>(entity =>
+            modelBuilder.Entity<Password>(entity =>
             {
+                entity.ToTable("Passwords", "pm");
                 entity.HasKey(e => e.Id);
                 entity.HasOne(e => e.User)
-                      .WithMany(u => u.PasswordEntries)
+                      .WithMany(u => u.Passwords)
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
                 
