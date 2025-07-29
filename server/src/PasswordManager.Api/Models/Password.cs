@@ -1,6 +1,6 @@
 namespace PasswordManager.Api.Models
 {
-    public class PasswordEntry
+    public class Password
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

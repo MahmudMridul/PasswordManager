@@ -11,6 +11,6 @@ namespace PasswordManager.Api.Models
         public DateTime UpdatedAt { get; set; }
         public bool IsActive { get; set; } = true;
         
-        public ICollection<PasswordEntry> PasswordEntries { get; set; } = new List<PasswordEntry>();
+        public ICollection<Password> Passwords { get; set; } = new List<Password>();
     }
 }
